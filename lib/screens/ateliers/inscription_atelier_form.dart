@@ -41,12 +41,20 @@ class _InscriptionAtelierFormState extends State<InscriptionAtelierForm> {
 
   void _envoyerDemande() async {
     if (_formKey.currentState!.validate() && accepteConditions) {
-      try {
-        await sendInscriptionRequest(
+      try {print({
+        'nom': nomController.text.trim(),
+        'prenom': prenomController.text.trim(),
+        'email': emailController.text.trim(),
+        'date_naissance': dateNaissanceController.text.trim(),
+        'atelier': groupeAge ?? 'Non précisé',
+      });
+
+      await sendInscriptionRequest(
           nom: nomController.text.trim(),
           prenom: prenomController.text.trim(),
           email: emailController.text.trim(),
-          groupe: groupeAge ?? 'Non précisé',
+          date_naissance: dateNaissanceController.text.trim(),
+          atelier: groupeAge ?? 'Non précisé',
         );
 
         ScaffoldMessenger.of(context).showSnackBar(
