@@ -153,7 +153,7 @@ class _GalleryPageState extends State<GalleryPage> {
                   borderRadius: BorderRadius.circular(12),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: Colors.black.withOpacity(0.2),
                       blurRadius: 6,
                       offset: const Offset(0, 2),
                     ),
@@ -177,8 +177,6 @@ class _GalleryPageState extends State<GalleryPage> {
                         return const Icon(Icons.broken_image);
                       },
                     ),
-
-
                     back: Container(
                       color: Colors.white,
                       padding: const EdgeInsets.all(8),

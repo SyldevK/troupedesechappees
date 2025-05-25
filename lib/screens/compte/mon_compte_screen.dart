@@ -132,25 +132,6 @@ class _MonCompteScreenState extends State<MonCompteScreen> {
                           ),
                           const SizedBox(height: 24),
                           Center(
-                            child: TextButton.icon(
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                  context,
-                                  '/changerMotDePasse',
-                                );
-                              },
-                              icon: const Icon(Icons.lock_outline),
-                              label: Text(
-                                'Changer mon mot de passe',
-                                style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.w600,
-                                  color: violetFonce,
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 24),
-                          Center(
                             child: Text(
                               "Mes réservations",
                               style: GoogleFonts.poppins(
@@ -167,7 +148,7 @@ class _MonCompteScreenState extends State<MonCompteScreen> {
                             final titre =
                                 event?['titre'] ?? 'Titre non disponible';
 
-                            // ✅ Date du spectacle choisi (via eventDate de la réservation)
+                            // Date du spectacle choisi (via eventDate de la réservation)
                             String dateHeureStr = '';
                             final eventDateField = resa['eventDate'];
                             if (eventDateField is Map &&
@@ -257,7 +238,7 @@ class _MonCompteScreenState extends State<MonCompteScreen> {
                       ),
                     ),
                   ),
-                  const AppFooter(), // ✅ Ton vrai footer
+                  const AppFooter(),
                 ],
               ),
     );

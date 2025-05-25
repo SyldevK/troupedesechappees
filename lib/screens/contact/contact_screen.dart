@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:troupedesechappees/widgets/app_footer.dart';
+import 'package:troupedesechappees/widgets/app_header.dart';
 import '../../services/contact_service.dart';
 
 class ContactScreen extends StatefulWidget {
@@ -96,66 +98,83 @@ class _ContactScreenState extends State<ContactScreen> {
   @override
   Widget build(BuildContext context) {
     final isLargeScreen = MediaQuery.of(context).size.width > 600;
+
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: violetFonce,
-        title: Text("Contact", style: GoogleFonts.poppins(color: Colors.white)),
-      ),
-      body: Stack(
+      body: Column(
         children: [
-          Align(
-            alignment: Alignment.topCenter,
-            child: Container(
-              height: 300,
-              width: double.infinity,
-              color: const Color(0xFFF9ECFC),
-            ),
-          ),
-          Column(
-            children: [
-              const SizedBox(height: 32),
-              Text("Contactez -nous", style: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold, color: violetFonce)),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Text(
-                  "Une question? Une inscription? Un mot doux? Le rideau est ouvert.",
-                  style: GoogleFonts.poppins(fontSize: 14, color: Colors.black87),
-                  textAlign: TextAlign.center,
-                ),
-              ),
-              const SizedBox(height: 30),
-              Expanded(
-                child: Center(
-                  child: Container(
-                    constraints: const BoxConstraints(maxWidth: 900),
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
-                    child: isLargeScreen
-                        ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(flex: 3, child: _buildFormCard()),
-                        const SizedBox(width: 24),
-                        Expanded(flex: 2, child: _buildContactCard()),
-                      ],
-                    )
-                        : Column(
-                      children: [
-                        _buildFormCard(),
-                        const SizedBox(height: 24),
-                        _buildContactCard(),
-                      ],
+          AppHeader(),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Container(
+                      height: 300,
+                      width: double.infinity,
+                      color: const Color(0xFFF9ECFC), // parme clair
                     ),
                   ),
-                ),
-              )
-            ],
+                  Column(
+                    children: [
+                      const SizedBox(height: 32),
+                      Text(
+                        "Contactez -nous",
+                        style: GoogleFonts.poppins(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: violetFonce,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          "Une question? Une inscription? Un mot doux? Le rideau est ouvert.",
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            color: Colors.black87,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      Center(
+                        child: Container(
+                          constraints: const BoxConstraints(maxWidth: 900),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 40),
+                          child: isLargeScreen
+                              ? Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(flex: 3, child: _buildFormCard()),
+                              const SizedBox(width: 24),
+                              Expanded(flex: 2, child: _buildContactCard()),
+                            ],
+                          )
+                              : Column(
+                            children: [
+                              _buildFormCard(),
+                              const SizedBox(height: 24),
+                              _buildContactCard(),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ),
+          AppFooter(),
         ],
       ),
     );
   }
+
 
   Widget _buildFormCard() {
     return Card(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../providers/auth_provider.dart';
 
 String getImagePath(String fileName) {
@@ -71,6 +72,7 @@ class _TabletHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLoggedIn = context.watch<AuthProvider>().isLoggedIn;
+    final isAdmin = context.watch<AuthProvider>().isAdmin;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
@@ -89,7 +91,11 @@ class _TabletHeader extends StatelessWidget {
           const SizedBox(width: 8),
           const Text(
             'La Troupe des Échappées',
-            style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const Spacer(),
           Row(
@@ -120,8 +126,25 @@ class _TabletHeader extends StatelessWidget {
                   isLoggedIn ? Icons.account_circle : Icons.login,
                   color: Colors.white,
                 ),
-                onPressed: () => Navigator.pushNamed(context, isLoggedIn ? '/monCompte' : '/login'),
+                onPressed:
+                    () => Navigator.pushNamed(
+                      context,
+                      isLoggedIn ? '/monCompte' : '/login',
+                    ),
               ),
+              // 👇 Bouton admin visible uniquement pour admin
+              if (isAdmin)
+                IconButton(
+                  tooltip: 'Administration',
+                  icon: const Icon(
+                    Icons.admin_panel_settings,
+                    color: Colors.white,
+                  ),
+                  onPressed: () async {
+                    final Uri url = Uri.parse('http://tie.test/admin');
+                    await launchUrl(url, mode: LaunchMode.externalApplication);
+                  },
+                ),
               IconButton(
                 tooltip: 'Menu complet',
                 icon: const Icon(Icons.menu, color: Colors.white),
@@ -146,6 +169,7 @@ class _WebHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLoggedIn = context.watch<AuthProvider>().isLoggedIn;
+    final isAdmin = context.watch<AuthProvider>().isAdmin;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 20),
@@ -178,27 +202,55 @@ class _WebHeader extends StatelessWidget {
             ],
           ),
           Row(
-            children: const [
-              _HeaderButton(label: 'Accueil'),
-              _HeaderButton(label: 'Notre histoire'),
-              _HeaderButton(label: 'Nos cours'),
-              _HeaderButton(label: 'Événements'),
-              _HeaderButton(label: 'Billetterie'),
-              _HeaderButton(label: 'Galerie'),
-              _HeaderButton(label: 'Contact'),
-              _HeaderButton(label: 'Ateliers'),
+            children: [
+              const _HeaderButton(label: 'Accueil'),
+              const _HeaderButton(label: 'Notre histoire'),
+              const _HeaderButton(label: 'Nos cours'),
+              const _HeaderButton(label: 'Événements'),
+              const _HeaderButton(label: 'Billetterie'),
+              const _HeaderButton(label: 'Galerie'),
+              const _HeaderButton(label: 'Contact'),
+              const _HeaderButton(label: 'Ateliers'),
+              if (isAdmin)
+                IconButton(
+                  tooltip: 'Administration',
+                  icon: const Icon(
+                    Icons.admin_panel_settings,
+                    color: Colors.white,
+                  ),
+                  onPressed: () async {
+                    final Uri url = Uri.parse('http://tie.test/admin');
+                    await launchUrl(url, mode: LaunchMode.externalApplication);
+                  },
+                ),
             ],
           ),
-          IconButton(
-            tooltip: isLoggedIn ? 'Mon compte' : 'Connexion',
-            onPressed: () {
-              Navigator.pushNamed(context, isLoggedIn ? '/monCompte' : '/login');
-            },
-            icon: Icon(
-              isLoggedIn ? Icons.account_circle : Icons.login,
-              color: Colors.white,
-              size: 30,
-            ),
+          Row(
+            children: [
+              IconButton(
+                tooltip: isLoggedIn ? 'Mon compte' : 'Connexion',
+                onPressed: () {
+                  Navigator.pushNamed(
+                    context,
+                    isLoggedIn ? '/monCompte' : '/login',
+                  );
+                },
+                icon: Icon(
+                  isLoggedIn ? Icons.account_circle : Icons.login,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
+              if (isLoggedIn)
+                IconButton(
+                  tooltip: 'Déconnexion',
+                  icon: const Icon(Icons.logout, color: Colors.white, size: 28),
+                  onPressed: () async {
+                    await context.read<AuthProvider>().logout();
+                    Navigator.pushReplacementNamed(context, '/login');
+                  },
+                ),
+            ],
           ),
         ],
       ),
@@ -238,7 +290,10 @@ class _HeaderButtonState extends State<_HeaderButton> {
                   color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
-                  decoration: _isHovered ? TextDecoration.underline : TextDecoration.none,
+                  decoration:
+                      _isHovered
+                          ? TextDecoration.underline
+                          : TextDecoration.none,
                   decorationColor: Colors.white,
                   decorationThickness: 2,
                 ),
@@ -293,7 +348,10 @@ class AppDrawer extends StatelessWidget {
         children: [
           const DrawerHeader(
             decoration: BoxDecoration(color: Color(0xFF6C3A87)),
-            child: Text('Menu', style: TextStyle(color: Colors.white, fontSize: 24)),
+            child: Text(
+              'Menu',
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
           ),
           const _DrawerItem('Accueil', route: '/home'),
           const _DrawerItem('Notre histoire', route: '/notreHistoire'),

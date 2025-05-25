@@ -8,7 +8,7 @@ class ApiService {
     } else if (Platform.isAndroid) {
       return 'http://10.0.2.2';
     } else {
-      return 'http://tie.test';;
+      return 'http://localhost';
     }
   }
 }
