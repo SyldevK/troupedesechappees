@@ -127,12 +127,13 @@ class _GalleryPageState extends State<GalleryPage> {
           GridView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: isMobile ? 2 : 4,
-              crossAxisSpacing: 12,
-              mainAxisSpacing: 12,
-              childAspectRatio: 4 / 3,
+            gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: isMobile ? 300 : 350,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 4 / 3, // ou 1 pour des cards carrées
             ),
+
             itemCount: pageItems.length,
             itemBuilder: (ctx, i) {
               final item = pageItems[i];
