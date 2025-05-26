@@ -6,7 +6,8 @@ class ApiService {
     if (kIsWeb) {
       return 'http://tie.test';
     } else if (Platform.isAndroid) {
-      return 'http://10.0.2.2';
+      // return 'http://10.0.2.2';
+      return ' 192.168.1.41';
     } else {
       return 'http://localhost';
     }

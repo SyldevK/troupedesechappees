@@ -27,7 +27,7 @@ class CoursesScreen extends StatelessWidget {
                 children: [
                   const IntroSection(),
 
-                  // 🎓 Cartes par tranche d'âge
+                  // Cartes par tranche d'âge
                   Wrap(
                     alignment: WrapAlignment.center,
                     spacing: 16,

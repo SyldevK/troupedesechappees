@@ -7,18 +7,18 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 
 
 class SpectacleService {
-  // 🔁 Base URL dynamique selon la plateforme
+  // Base URL dynamique selon la plateforme
   static String get _baseUrl {
     if (kIsWeb) {
-      return 'http://tie.test/api'; // Web avec Laragon
+      return 'http://tie.test/api';
     } else if (Platform.isAndroid) {
-      return 'http://10.0.2.2:8000/api'; // Android Emulator
+      return 'http:// 192.168.1.41:8000/api';
     } else {
-      return 'http://localhost:8000/api'; // iOS Simulator / Desktop
+      return 'http://localhost:8000/api';
     }
   }
 
-  // 📰 Dernier spectacle à venir (le plus proche dans le futur)
+  // spectacle à venir
   static Future<Spectacle?> fetchDernierSpectacle() async {
     final url = Uri.parse('$_baseUrl/events?isVisible=true');
     print('🟣 Appel API vers $url');
@@ -33,7 +33,7 @@ class SpectacleService {
 
       final spectacles = data.map((e) => Spectacle.fromJson(e)).toList();
 
-      // ✅ Filtrer ceux à venir et trier par date
+      // Filtrer ceux à venir et trier par date
       final now = DateTime.now();
       spectacles.removeWhere((s) =>
       s.dates.isEmpty || s.dates.first.dateTime.isBefore(now));
@@ -45,7 +45,7 @@ class SpectacleService {
     return null;
   }
 
-  // 🎭 Deux derniers spectacles passés
+  //  Deux derniers spectacles passés
   static Future<List<Spectacle>> fetchLastTwoSpectacles() async {
     final url = Uri.parse('$_baseUrl/events?isVisible=true');
     print('🟣 Appel API vers $url');
@@ -60,7 +60,7 @@ class SpectacleService {
 
       final spectacles = data.map((e) => Spectacle.fromJson(e)).toList();
 
-      // ✅ Filtrer les passés et trier par date décroissante
+      // Filtrer les passés et trier par date décroissante
       final now = DateTime.now();
       spectacles.removeWhere((s) =>
       s.dates.isEmpty || s.dates.last.dateTime.isAfter(now));

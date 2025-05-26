@@ -24,8 +24,6 @@ class EventScreen extends StatelessWidget {
                 child: Column(
                   children: [
                     const AppHeader(),
-
-                    // Bannière d’introduction
                     Stack(
                       children: [
                         Image.asset(
@@ -67,7 +65,7 @@ class EventScreen extends StatelessWidget {
 
                     const SizedBox(height: 24),
 
-                    // 🎟️ Ticket prochain spectacle
+                    // Ticket prochain spectacle
                     FutureBuilder<Spectacle?>(
                       future: SpectacleService.fetchDernierSpectacle(),
                       builder: (context, snapshot) {
@@ -83,7 +81,7 @@ class EventScreen extends StatelessWidget {
                             child: TicketShape(
                               titre: spectacle.titre,
                               description: spectacle.description,
-                              dates: spectacle.dates.map((e) => e.dateTime).toList(), // ✅ conversion ici
+                              dates: spectacle.dates.map((e) => e.dateTime).toList(),
                               lieu: spectacle.lieu,
                             ),
                           );

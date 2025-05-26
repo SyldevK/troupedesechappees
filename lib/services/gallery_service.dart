@@ -9,7 +9,7 @@ class GalleryService {
 
   static String get _baseApi {
     if (kIsWeb) return 'http://tie.test/api';
-    if (Platform.isAndroid) return 'http://10.0.2.2:8000/api';
+    if (Platform.isAndroid) return 'http:// 192.168.1.41:8000/api';
     return 'http://localhost:8000/api';
   }
   static Future<List<GalleryItem>> fetchItems({GalleryCategory? filter}) async {

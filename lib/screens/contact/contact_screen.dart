@@ -113,7 +113,7 @@ class _ContactScreenState extends State<ContactScreen> {
                     child: Container(
                       height: 300,
                       width: double.infinity,
-                      color: const Color(0xFFF9ECFC), // parme clair
+                      color: const Color(0xFFF9ECFC),
                     ),
                   ),
                   Column(
