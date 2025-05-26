@@ -14,7 +14,7 @@ class AppHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final isMobile = width < 600;
-    final isTablet = width >= 600 && width < 1300;
+    final isTablet = width >= 600 && width < 1200;
 
     if (isMobile) {
       return const _MobileHeader();
@@ -36,6 +36,7 @@ class _MobileHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: const Color(0xFF6C3A87),
+      iconTheme: const IconThemeData(color: Colors.white), // Burger blanc
       title: Row(
         children: [
           ClipRRect(
@@ -48,12 +49,19 @@ class _MobileHeader extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 6),
-          const Text('Troupe des Échappées'),
+          const Text(
+            'Troupe des Échappées',
+            style: TextStyle(
+              color: Colors.white, // Titre blanc
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ],
       ),
       actions: [
         IconButton(
           icon: const Icon(Icons.menu),
+          color: Colors.white, // Burger blanc
           onPressed: () {
             Scaffold.maybeOf(context)?.openEndDrawer();
           },
@@ -73,9 +81,17 @@ class _TabletHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final isLoggedIn = context.watch<AuthProvider>().isLoggedIn;
     final isAdmin = context.watch<AuthProvider>().isAdmin;
+    final width = MediaQuery.of(context).size.width;
+
+    double horizontalPadding = width > 1200
+        ? 32
+        : width > 800
+        ? 16
+        : 8;
+    double verticalPadding = width > 900 ? 12 : 6;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
       color: const Color(0xFF6C3A87),
       child: Row(
         children: [
@@ -83,8 +99,8 @@ class _TabletHeader extends StatelessWidget {
             borderRadius: BorderRadius.circular(100),
             child: Image.asset(
               getImagePath('logo_tie.png'),
-              width: 90,
-              height: 90,
+              width: 60,
+              height: 60,
               fit: BoxFit.cover,
             ),
           ),
@@ -126,13 +142,11 @@ class _TabletHeader extends StatelessWidget {
                   isLoggedIn ? Icons.account_circle : Icons.login,
                   color: Colors.white,
                 ),
-                onPressed:
-                    () => Navigator.pushNamed(
-                      context,
-                      isLoggedIn ? '/monCompte' : '/login',
-                    ),
+                onPressed: () => Navigator.pushNamed(
+                  context,
+                  isLoggedIn ? '/monCompte' : '/login',
+                ),
               ),
-              // 👇 Bouton admin visible uniquement pour admin
               if (isAdmin)
                 IconButton(
                   tooltip: 'Administration',
@@ -170,9 +184,19 @@ class _WebHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final isLoggedIn = context.watch<AuthProvider>().isLoggedIn;
     final isAdmin = context.watch<AuthProvider>().isAdmin;
+    final width = MediaQuery.of(context).size.width;
+
+    double horizontalPadding = width > 1500
+        ? 64
+        : width > 1300
+        ? 40
+        : width > 1100
+        ? 20
+        : 8;
+    double verticalPadding = width > 800 ? 20 : 10;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 20),
+      padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
       color: const Color(0xFF6C3A87),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -197,6 +221,7 @@ class _WebHeader extends StatelessWidget {
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
+                  //fontFamily: 'Poppins', // Si tu veux la police Poppins
                 ),
               ),
             ],
@@ -211,6 +236,7 @@ class _WebHeader extends StatelessWidget {
               const _HeaderButton(label: 'Galerie'),
               const _HeaderButton(label: 'Contact'),
               const _HeaderButton(label: 'Ateliers'),
+              // ➕ Ajoute ici d'autres liens si besoin
               if (isAdmin)
                 IconButton(
                   tooltip: 'Administration',
@@ -274,8 +300,19 @@ class _HeaderButtonState extends State<_HeaderButton> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    double horizontalButtonPadding = width > 1700
+        ? 40
+        : width > 1300
+        ? 28
+        : width > 1000
+        ? 16
+        : width > 800
+        ? 8
+        : 4;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 40),
+      padding: EdgeInsets.symmetric(horizontal: horizontalButtonPadding),
       child: MouseRegion(
         onEnter: (_) => setState(() => _isHovered = true),
         onExit: (_) => setState(() => _isHovered = false),
@@ -291,9 +328,7 @@ class _HeaderButtonState extends State<_HeaderButton> {
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                   decoration:
-                      _isHovered
-                          ? TextDecoration.underline
-                          : TextDecoration.none,
+                  _isHovered ? TextDecoration.underline : TextDecoration.none,
                   decorationColor: Colors.white,
                   decorationThickness: 2,
                 ),
