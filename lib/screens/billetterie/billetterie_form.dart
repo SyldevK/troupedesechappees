@@ -6,7 +6,7 @@ import 'dart:convert';
 
 import '../../services/api_service.dart';
 import '../../services/auth_service.dart';
-import '../../models/selected_reservation_data.dart'; // ✅ import ici
+import '../../models/selected_reservation_data.dart';
 
 class BilletterieForm extends StatefulWidget {
   final SelectedReservationData? selected;
@@ -102,7 +102,7 @@ class _BilletterieFormState extends State<BilletterieForm> {
   }
 
   Future<void> _envoyerReservation() async {
-    final apiUrl = Uri.parse('${ApiService.getBaseUrl()}/api/reservations');
+    final apiUrl = Uri.parse('${ApiService.baseApiUrl}/reservations');
     final token = await AuthService.getToken();
     final user = await AuthService.fetchUserProfile();
 

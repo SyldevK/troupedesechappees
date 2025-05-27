@@ -7,17 +7,18 @@ import 'package:troupedesechappees/screens/home/news_section.dart';
 import 'package:troupedesechappees/screens/home/signup_section.dart';
 
 class HomeScreen extends StatelessWidget {
+  static const String routeName = '/home';
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       endDrawer: const AppDrawer(),
-      body: SingleChildScrollView( // ✅ scroll global
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: const [
-            AppHeader(),
+            AppHeader(isHome: true),
             CarouselSection(),
             SizedBox(height: 32),
             ActivitiesSection(),

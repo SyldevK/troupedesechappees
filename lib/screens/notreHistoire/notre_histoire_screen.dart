@@ -9,14 +9,15 @@ class NotreHistoireScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const violetFonce = Color(0xFF62267D);
-
     return Scaffold(
+      endDrawer: const AppDrawer(),
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          AppHeader(),
-          Expanded(
-            child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const AppHeader(isHome: false),
+            Padding(
               padding: const EdgeInsets.all(24),
               child: Center(
                 child: ConstrainedBox(
@@ -50,45 +51,42 @@ class NotreHistoireScreen extends StatelessWidget {
                       const SizedBox(height: 32),
                       _ActeWidget(
                         titre: "ACTE I – La naissance",
-                        texte:
-                            "L'association a été fondée en 2001 par des passionnés du théâtre. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla pellentesque, nunc id rutrum pharetra, lorem enim sollicitudin nibh, sodales pulvinar nulla lectus in dolor.",
+                        texte: "L'association a été fondée en 2001 par des passionnés du théâtre...",
                         imagePath: 'assets/images/masques.png',
                         imageLeft: false,
                       ),
                       _ActeWidget(
                         titre: "ACTE II – Les premières scènes",
-                        texte:
-                            "Integer non nulla consectetur mauris feugiat euismod. Morbi cursus pellentesque mi, eu fermentum augue imperdiet sed. Praesent id ultrices lacus.",
+                        texte: "Integer non nulla consectetur mauris feugiat euismod...",
                         imagePath: 'assets/images/carousel1.jpg',
                         imageLeft: true,
                       ),
                       _ActeWidget(
                         titre: "ACTE III – La croissance",
-                        texte:
-                            "Phasellus luctus, ex accumsan laoreet cursus, nibh velit malesuada nisl, et hendrerit magna massa nec libero. Sed imperdiet nunc in congue egestas.",
+                        texte: "Phasellus luctus, ex accumsan laoreet cursus...",
                         imagePath: 'assets/images/carousel8.jpg',
                         imageLeft: false,
                       ),
                       _ActeWidget(
                         titre: "ACTE IV – Aujourd'hui et demain",
-                        texte:
-                            "Suspendisse potenti. Donec vitae venenatis nisl, efficitur pulvinar magna. Donec semper lorem vel nisl tempor tincidunt.",
+                        texte: "Suspendisse potenti. Donec vitae venenatis nisl...",
                         imagePath: 'assets/images/femmes.jpg',
                         imageLeft: true,
                       ),
+                      const SizedBox(height: 48),
                     ],
                   ),
                 ),
               ),
             ),
-          ),
-          AppFooter()
-        ],
+            const AppFooter(), // ✅ pleine largeur
+          ],
+        ),
       ),
     );
   }
 }
-class _ActeWidget extends StatelessWidget {
+  class _ActeWidget extends StatelessWidget {
   final String titre;
   final String texte;
   final String imagePath;
@@ -106,15 +104,20 @@ class _ActeWidget extends StatelessWidget {
     const violetFonce = Color(0xFF62267D);
     final isMobile = MediaQuery.of(context).size.width < 600;
 
-    final image = ClipRRect(
+    final imageWidget = ClipRRect(
       borderRadius: BorderRadius.circular(12),
       child: Image.asset(
         imagePath,
-        width: isMobile ? double.infinity : 160,
-        height: isMobile ? 200 : 120,
+        width: isMobile && titre.contains("ACTE I") ? 220 : (isMobile ? double.infinity : 160),
+        height: isMobile && titre.contains("ACTE I") ? 150 : (isMobile ? 200 : 120),
         fit: BoxFit.cover,
       ),
     );
+
+    final image = isMobile && titre.contains("ACTE I")
+        ? Center(child: imageWidget)
+        : imageWidget;
+
 
     final texteWidget = Padding(
       padding: EdgeInsets.symmetric(

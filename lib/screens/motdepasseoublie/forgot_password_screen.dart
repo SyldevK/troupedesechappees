@@ -17,7 +17,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   Future<void> forgotPassword() async {
     setState(() => _sending = true);
     try {
-      final baseUrl = ApiService.getBaseUrl();
+      final baseUrl = ApiService.baseApiUrl;
       final response = await http.post(
         Uri.parse('$baseUrl/api/forgot-password'),
         headers: {'Content-Type': 'application/json'},

@@ -31,7 +31,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     setState(() => _sending = true);
 
     try {
-      final baseUrl = ApiService.getBaseUrl();
+      final baseUrl = ApiService.baseApiUrl;
       final response = await http.post(
         Uri.parse('$baseUrl/api/reset-password'),
         headers: {'Content-Type': 'application/json'},

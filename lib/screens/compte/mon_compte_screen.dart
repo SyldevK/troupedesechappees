@@ -34,7 +34,7 @@ class _MonCompteScreenState extends State<MonCompteScreen> {
 
     if (profil != null) {
       final response = await http.get(
-        Uri.parse('${ApiService.getBaseUrl()}/api/reservations'),
+        Uri.parse('${ApiService.baseApiUrl}/reservations'),
         headers: {'Authorization': 'Bearer $token'},
       );
 
@@ -52,7 +52,6 @@ class _MonCompteScreenState extends State<MonCompteScreen> {
 
         setState(() {
           user = profil;
-          // garde ta logique d’enrichissement ici
           enrichedReservations = reservations.cast<Map<String, dynamic>>();
         });
       } else {
@@ -62,8 +61,6 @@ class _MonCompteScreenState extends State<MonCompteScreen> {
       print('❗ Aucun profil utilisateur');
     }
   }
-
-
   void _logout() async {
     final confirm = await showDialog<bool>(
       context: context,
@@ -97,13 +94,14 @@ class _MonCompteScreenState extends State<MonCompteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      endDrawer: const AppDrawer(),
       backgroundColor: Colors.white,
       body:
           user == null
               ? const Center(child: CircularProgressIndicator())
               : Column(
                 children: [
-                  const AppHeader(),
+                  const AppHeader(isHome: false),
                   Expanded(
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.all(16),

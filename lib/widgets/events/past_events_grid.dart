@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 
 import '../../../models/spectacle.dart';
 import '../../../theme/app_colors.dart';
+import '../../services/api_service.dart';
 import '../../utils/network_utils.dart';
 
 class PastEventsGrid extends StatelessWidget {
@@ -94,12 +95,7 @@ class PastEventsGrid extends StatelessWidget {
     );
   }
   Widget _buildEventCard(Spectacle spectacle, DateFormat dateFormat) {
-    final String base =
-        kIsWeb
-            ? 'http://tie.test'
-            : Platform.isAndroid
-            ? 'http://10.0.2.2'
-            : 'http://localhost';
+    final String base = ApiService.baseApiUrl;
     final String imageUrl = '$base/uploads/images/${spectacle.imageUrl}';
 
     return Container(

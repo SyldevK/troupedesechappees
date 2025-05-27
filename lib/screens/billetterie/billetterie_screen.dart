@@ -38,10 +38,11 @@ class _BilletterieScreenState extends State<BilletterieScreen> {
     final violetFonce = const Color(0xFF6C3A87);
 
     return Scaffold(
+      endDrawer: const AppDrawer(),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const AppHeader(),
+            const AppHeader(isHome: false),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
               child: Column(

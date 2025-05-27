@@ -52,7 +52,7 @@ class _InscriptionFormState extends State<InscriptionForm> {
     final platform = kIsWeb ? 'web' : 'mobile';
     try {
       final response = await http.post(
-        Uri.parse('${ApiService.getBaseUrl()}/api/register'),
+        Uri.parse('${ApiService.baseApiUrl}/register'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'email': email,

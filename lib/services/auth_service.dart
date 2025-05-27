@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class AuthService {
-  static const _baseUrl = 'http://tie.test/api';
+  static const _baseUrl = 'https://b73e-2a01-cb08-8b47-9900-b0fe-f49e-21fd-4b3e.ngrok-free.app/api';
   static const _storage = FlutterSecureStorage();
 
   static Future<String?> login(String email, String password) async {

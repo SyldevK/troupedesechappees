@@ -28,19 +28,6 @@ class VerificationOkScreen extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 20),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/login');
-                },
-                child: Text(
-                  "Aller à la page de connexion",
-                  style: GoogleFonts.poppins(
-                    color: const Color(0xFF6C3A87),
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              )
             ],
           ),
         ),

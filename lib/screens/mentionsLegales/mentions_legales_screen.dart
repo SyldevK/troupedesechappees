@@ -98,7 +98,7 @@ class MentionsLegalesContent extends StatelessWidget {
           icon: Icons.copyright_outlined,
         ),
         section(
-          "Protection des données personnelles",
+          "Protection des données",
           "Ce site peut collecter des données personnelles via les formulaires (inscriptions, réservations). "
               "Conformément au RGPD, vous pouvez accéder, rectifier ou supprimer vos données en nous contactant.",
           icon: Icons.privacy_tip_outlined,

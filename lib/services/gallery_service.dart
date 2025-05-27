@@ -8,8 +8,8 @@ class GalleryService {
   const GalleryService._();
 
   static String get _baseApi {
-    if (kIsWeb) return 'http://tie.test/api';
-    if (Platform.isAndroid) return 'http:// 192.168.1.41:8000/api';
+    if (kIsWeb) return 'https://b73e-2a01-cb08-8b47-9900-b0fe-f49e-21fd-4b3e.ngrok-free.app/api';
+    if (Platform.isAndroid) return 'https://b73e-2a01-cb08-8b47-9900-b0fe-f49e-21fd-4b3e.ngrok-free.app/api';
     return 'http://localhost:8000/api';
   }
   static Future<List<GalleryItem>> fetchItems({GalleryCategory? filter}) async {

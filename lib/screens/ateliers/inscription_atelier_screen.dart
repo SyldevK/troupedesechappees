@@ -9,10 +9,11 @@ class InscriptionAtelierScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      endDrawer: const AppDrawer(),
       body: SingleChildScrollView(
         child: Column(
           children: const [
-            AppHeader(),
+            const AppHeader(isHome: false),
             Padding(
               padding: EdgeInsets.all(24.0),
               child: InscriptionAtelierForm(),

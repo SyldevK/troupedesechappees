@@ -8,7 +8,8 @@ String getImagePath(String fileName) {
 }
 
 class AppHeader extends StatelessWidget {
-  const AppHeader({super.key});
+  final bool isHome;
+  const AppHeader({super.key, this.isHome = false});
 
   @override
   Widget build(BuildContext context) {
@@ -17,28 +18,39 @@ class AppHeader extends StatelessWidget {
     final isTablet = width >= 600 && width < 1200;
 
     if (isMobile) {
-      return const _MobileHeader();
+      return _MobileHeader(isHome: isHome);
     } else if (isTablet) {
-      return const _TabletHeader();
+      return _TabletHeader(isHome: isHome);
     } else {
-      return const _WebHeader();
+      return _WebHeader(isHome: isHome);
     }
   }
 }
+
 
 // ----------------------------
 // Mobile Header
 // ----------------------------
 class _MobileHeader extends StatelessWidget {
-  const _MobileHeader();
+  final bool isHome;
+  const _MobileHeader({this.isHome = false});
 
   @override
   Widget build(BuildContext context) {
+    final canGoBack = Navigator.canPop(context) && !isHome;
+
     return AppBar(
+      automaticallyImplyLeading: false,
       backgroundColor: const Color(0xFF6C3A87),
-      iconTheme: const IconThemeData(color: Colors.white), // Burger blanc
+      titleSpacing: 0,
       title: Row(
         children: [
+          if (canGoBack)
+            IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () => Navigator.pop(context),
+            ),
+          const SizedBox(width: 4),
           ClipRRect(
             borderRadius: BorderRadius.circular(100),
             child: Image.asset(
@@ -49,22 +61,28 @@ class _MobileHeader extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 6),
-          const Text(
-            'Troupe des Échappées',
-            style: TextStyle(
-              color: Colors.white, // Titre blanc
-              fontWeight: FontWeight.bold,
+          Expanded(
+            child: Text(
+              'La Troupe des Échappées',
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
             ),
           ),
         ],
       ),
       actions: [
-        IconButton(
-          icon: const Icon(Icons.menu),
-          color: Colors.white, // Burger blanc
-          onPressed: () {
-            Scaffold.maybeOf(context)?.openEndDrawer();
-          },
+        Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu),
+            color: Colors.white,
+            onPressed: () {
+              Scaffold.of(context).openEndDrawer();
+            },
+          ),
         ),
       ],
     );
@@ -75,7 +93,7 @@ class _MobileHeader extends StatelessWidget {
 // Tablet Header
 // ----------------------------
 class _TabletHeader extends StatelessWidget {
-  const _TabletHeader();
+  const _TabletHeader({required bool isHome});
 
   @override
   Widget build(BuildContext context) {
@@ -83,15 +101,19 @@ class _TabletHeader extends StatelessWidget {
     final isAdmin = context.watch<AuthProvider>().isAdmin;
     final width = MediaQuery.of(context).size.width;
 
-    double horizontalPadding = width > 1200
-        ? 32
-        : width > 800
-        ? 16
-        : 8;
+    double horizontalPadding =
+        width > 1200
+            ? 32
+            : width > 800
+            ? 16
+            : 8;
     double verticalPadding = width > 900 ? 12 : 6;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+      padding: EdgeInsets.symmetric(
+        horizontal: horizontalPadding,
+        vertical: verticalPadding,
+      ),
       color: const Color(0xFF6C3A87),
       child: Row(
         children: [
@@ -142,10 +164,11 @@ class _TabletHeader extends StatelessWidget {
                   isLoggedIn ? Icons.account_circle : Icons.login,
                   color: Colors.white,
                 ),
-                onPressed: () => Navigator.pushNamed(
-                  context,
-                  isLoggedIn ? '/monCompte' : '/login',
-                ),
+                onPressed:
+                    () => Navigator.pushNamed(
+                      context,
+                      isLoggedIn ? '/monCompte' : '/login',
+                    ),
               ),
               if (isAdmin)
                 IconButton(
@@ -178,7 +201,7 @@ class _TabletHeader extends StatelessWidget {
 // Web Header
 // ----------------------------
 class _WebHeader extends StatelessWidget {
-  const _WebHeader();
+  const _WebHeader({required bool isHome});
 
   @override
   Widget build(BuildContext context) {
@@ -186,17 +209,21 @@ class _WebHeader extends StatelessWidget {
     final isAdmin = context.watch<AuthProvider>().isAdmin;
     final width = MediaQuery.of(context).size.width;
 
-    double horizontalPadding = width > 1500
-        ? 64
-        : width > 1300
-        ? 40
-        : width > 1100
-        ? 20
-        : 8;
+    double horizontalPadding =
+        width > 1500
+            ? 64
+            : width > 1300
+            ? 40
+            : width > 1100
+            ? 20
+            : 8;
     double verticalPadding = width > 800 ? 20 : 10;
 
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: horizontalPadding, vertical: verticalPadding),
+      padding: EdgeInsets.symmetric(
+        horizontal: horizontalPadding,
+        vertical: verticalPadding,
+      ),
       color: const Color(0xFF6C3A87),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -301,15 +328,16 @@ class _HeaderButtonState extends State<_HeaderButton> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    double horizontalButtonPadding = width > 1700
-        ? 40
-        : width > 1300
-        ? 28
-        : width > 1000
-        ? 16
-        : width > 800
-        ? 8
-        : 4;
+    double horizontalButtonPadding =
+        width > 1700
+            ? 40
+            : width > 1300
+            ? 28
+            : width > 1000
+            ? 16
+            : width > 800
+            ? 8
+            : 4;
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: horizontalButtonPadding),
@@ -328,7 +356,9 @@ class _HeaderButtonState extends State<_HeaderButton> {
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                   decoration:
-                  _isHovered ? TextDecoration.underline : TextDecoration.none,
+                      _isHovered
+                          ? TextDecoration.underline
+                          : TextDecoration.none,
                   decorationColor: Colors.white,
                   decorationThickness: 2,
                 ),

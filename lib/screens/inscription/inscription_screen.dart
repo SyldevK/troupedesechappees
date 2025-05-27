@@ -19,6 +19,10 @@ class InscriptionScreen extends StatelessWidget {
                 height: 200,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Color(0xFF6C3A87),
+                    width: 4,
+                  ),
                   image: DecorationImage(
                     image: AssetImage('assets/images/logo_tie.png'),
                     fit: BoxFit.cover,

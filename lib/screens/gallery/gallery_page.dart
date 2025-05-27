@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/GalleryItem.dart';
 import '../../providers/gallery_provider.dart';
+import '../../services/api_service.dart';
 import '../../widgets/app_header.dart';
 import '../../widgets/app_footer.dart';
 import '../../widgets/gallery/custom_flip_card.dart';
@@ -19,7 +20,7 @@ class GalleryPage extends StatefulWidget {
 class _GalleryPageState extends State<GalleryPage> {
   GalleryCategory _activeCategory = GalleryCategory.All;
   int _currentPage = 1;
-  static const int _desktopItemsPerPage = 12;
+  static const int _desktopItemsPerPage = 15;
   static const int _mobileItemsPerPage = 6;
 
   @override
@@ -46,27 +47,39 @@ class _GalleryPageState extends State<GalleryPage> {
     final prov = context.watch<GalleryProvider>();
 
     return Scaffold(
-      body: Column(
-        children: [
-          const AppHeader(),
-          Expanded(
-            child:
-                prov.loading
-                    ? const Center(child: CircularProgressIndicator())
-                    : prov.error != null
-                    ? Center(
-                      child: Text(
-                        'Erreur : ${prov.error}',
-                        style: const TextStyle(color: Colors.red),
-                      ),
-                    )
-                    : prov.items.isEmpty
-                    ? const Center(child: Text('Aucun média disponible'))
-                    : _buildContent(context, prov.items),
-          ),
-          const AppFooter(),
-        ],
-      ),
+      endDrawer: const AppDrawer(),
+      body:
+          prov.loading
+              ? const Center(child: CircularProgressIndicator())
+              : prov.error != null
+              ? Center(
+                child: Text(
+                  'Erreur : ${prov.error}',
+                  style: const TextStyle(color: Colors.red),
+                ),
+              )
+              : prov.items.isEmpty
+              ? const Center(child: Text('Aucun média disponible'))
+              : LayoutBuilder(
+                builder: (context, constraints) {
+                  return SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const AppHeader(isHome: false),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 24,
+                          ),
+                          child: _buildContent(context, prov.items),
+                        ),
+                        const AppFooter(),
+                      ],
+                    ),
+                  );
+                },
+              ),
     );
   }
 
@@ -92,9 +105,10 @@ class _GalleryPageState extends State<GalleryPage> {
         children: [
           Text(
             'Galerie',
-            style: Theme.of(
-              context,
-            ).textTheme.headlineSmall?.copyWith(color: Color(0xFF6C3A87), fontWeight: FontWeight.bold),
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              color: Color(0xFF6C3A87),
+              fontWeight: FontWeight.bold,
+            ),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
@@ -104,7 +118,6 @@ class _GalleryPageState extends State<GalleryPage> {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
-
           // Choix de catégorie
           Wrap(
             alignment: WrapAlignment.center,
@@ -122,7 +135,6 @@ class _GalleryPageState extends State<GalleryPage> {
                 }).toList(),
           ),
           const SizedBox(height: 24),
-
           // Grille avec FlipCard
           GridView.builder(
             shrinkWrap: true,
@@ -133,21 +145,14 @@ class _GalleryPageState extends State<GalleryPage> {
               mainAxisSpacing: 10,
               childAspectRatio: 4 / 3, // ou 1 pour des cards carrées
             ),
-
             itemCount: pageItems.length,
             itemBuilder: (ctx, i) {
               final item = pageItems[i];
-
-              final base =
-                  kIsWeb
-                      ? 'http://tie.test'
-                      : Platform.isAndroid
-                      ? 'http:// 192.168.1.41:8000'
-                      : 'http://localhost';
+              final base = ApiService.baseAssetsUrl;
               final imageUrl =
-              item.url.startsWith(RegExp(r'https?://'))
-                  ? item.url
-                  : '$base/uploads/images/${item.url}';
+                  item.url.startsWith(RegExp(r'https?://'))
+                      ? item.url
+                      : '$base/uploads/images/${item.url}';
               print("🖼️ URL image : $imageUrl");
               return Container(
                 decoration: BoxDecoration(
@@ -186,7 +191,10 @@ class _GalleryPageState extends State<GalleryPage> {
                         children: [
                           Text(
                             item.title,
-                            style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF6C3A87)),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF6C3A87),
+                            ),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 4),
@@ -204,7 +212,6 @@ class _GalleryPageState extends State<GalleryPage> {
             },
           ),
           const SizedBox(height: 24),
-
           // Pagination
           if (pageCount > 1)
             Center(
@@ -213,7 +220,10 @@ class _GalleryPageState extends State<GalleryPage> {
                 spacing: 6,
                 children: [
                   IconButton(
-                    icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF6C3A87),),
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                      color: Color(0xFF6C3A87),
+                    ),
                     onPressed:
                         _currentPage > 1
                             ? () => _goToPage(_currentPage - 1)
@@ -231,7 +241,10 @@ class _GalleryPageState extends State<GalleryPage> {
                       ),
                     ),
                   IconButton(
-                    icon: const Icon(Icons.arrow_forward_ios, color: Color(0xFF6C3A87)),
+                    icon: const Icon(
+                      Icons.arrow_forward_ios,
+                      color: Color(0xFF6C3A87),
+                    ),
                     onPressed:
                         _currentPage < pageCount
                             ? () => _goToPage(_currentPage + 1)

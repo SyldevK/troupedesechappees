@@ -8,6 +8,7 @@ class AppFooter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: double.infinity,
       color: const Color(0xFF6C3A87),
       padding: const EdgeInsets.symmetric(vertical: 32, horizontal: 24),
       child: LayoutBuilder(
@@ -348,7 +349,7 @@ class _FooterLinkListState extends State<FooterLinkList> {
                           break;
                         case "Télécharger le planning PDF":
                           launchUrl(
-                            Uri.parse("http://tie.test/pdf/planning.pdf"),
+                            Uri.parse("https://b73e-2a01-cb08-8b47-9900-b0fe-f49e-21fd-4b3e.ngrok-free.app/pdf/planning.pdf"),
                             mode: LaunchMode.externalApplication,
                           );
                           break;

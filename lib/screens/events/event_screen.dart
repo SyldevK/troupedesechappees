@@ -14,6 +14,7 @@ class EventScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      endDrawer: const AppDrawer(),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
@@ -23,7 +24,7 @@ class EventScreen extends StatelessWidget {
                 constraints: BoxConstraints(minWidth: constraints.maxWidth),
                 child: Column(
                   children: [
-                    const AppHeader(),
+                    const AppHeader(isHome: false),
                     Stack(
                       children: [
                         Image.asset(

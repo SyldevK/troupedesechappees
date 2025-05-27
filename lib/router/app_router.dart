@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:troupedesechappees/screens/ateliers/inscription_atelier_screen.dart';
 import 'package:troupedesechappees/screens/billetterie/billetterie_screen.dart';
-import 'package:troupedesechappees/screens/changerMotdePasse/ChangerMotDePasseScreen.dart';
 import 'package:troupedesechappees/screens/courses/course_screen.dart';
 import 'package:troupedesechappees/screens/events/event_screen.dart';
 import 'package:troupedesechappees/screens/gallery/gallery_page.dart';
@@ -47,8 +46,6 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const InscriptionScreen());
       case '/login':
         return MaterialPageRoute(builder: (_) => const LoginScreen());
-      case '/changerMotDePasse':
-        return MaterialPageRoute(builder: (_) => const ChangerMotDePasseScreen());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

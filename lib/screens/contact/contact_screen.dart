@@ -63,23 +63,39 @@ class _ContactScreenState extends State<ContactScreen> {
     }
   }
 
-  Widget champTexte(String label, TextEditingController controller, {int maxLines = 1}) {
+  Widget champTexte(
+    String label,
+    TextEditingController controller, {
+    int maxLines = 1,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: GoogleFonts.poppins(fontWeight: FontWeight.w600, color: violetFonce)),
+          Text(
+            label,
+            style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w600,
+              color: violetFonce,
+            ),
+          ),
           const SizedBox(height: 6),
           TextFormField(
             controller: controller,
             maxLines: maxLines,
-            style: GoogleFonts.poppins(color: Colors.black87, fontWeight: FontWeight.w500),
+            style: GoogleFonts.poppins(
+              color: Colors.black87,
+              fontWeight: FontWeight.w500,
+            ),
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,
               hintStyle: GoogleFonts.poppins(color: Colors.grey),
-              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 12,
+              ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide(color: violetFonce.withOpacity(0.2)),
@@ -94,91 +110,96 @@ class _ContactScreenState extends State<ContactScreen> {
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     final isLargeScreen = MediaQuery.of(context).size.width > 600;
-
     return Scaffold(
+      endDrawer: const AppDrawer(),
       backgroundColor: Colors.white,
-      body: Column(
-        children: [
-          AppHeader(),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topCenter,
-                    child: Container(
-                      height: 300,
-                      width: double.infinity,
-                      color: const Color(0xFFF9ECFC),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const AppHeader(isHome: false),
+            Stack(
+              children: [
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    height: 300,
+                    width: double.infinity,
+                    color: const Color(0xFFF9ECFC),
+                  ),
+                ),
+                Column(
+                  children: [
+                    const SizedBox(height: 32),
+                    Text(
+                      "Contactez -nous",
+                      style: GoogleFonts.poppins(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: violetFonce,
+                      ),
                     ),
-                  ),
-                  Column(
-                    children: [
-                      const SizedBox(height: 32),
-                      Text(
-                        "Contactez -nous",
+                    const SizedBox(height: 8),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                        "Une question? Une inscription? Un mot doux? Le rideau est ouvert.",
                         style: GoogleFonts.poppins(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: violetFonce,
+                          fontSize: 14,
+                          color: Colors.black87,
                         ),
+                        textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 8),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Text(
-                          "Une question? Une inscription? Un mot doux? Le rideau est ouvert.",
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            color: Colors.black87,
-                          ),
-                          textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: 30),
+                    Center(
+                      child: Container(
+                        constraints: const BoxConstraints(maxWidth: 900),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 24,
+                          vertical: 40,
                         ),
+                        child:
+                            isLargeScreen
+                                ? Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(flex: 3, child: _buildFormCard()),
+                                    const SizedBox(width: 24),
+                                    Expanded(
+                                      flex: 2,
+                                      child: _buildContactCard(),
+                                    ),
+                                  ],
+                                )
+                                : Column(
+                                  children: [
+                                    _buildFormCard(),
+                                    const SizedBox(height: 24),
+                                    _buildContactCard(),
+                                  ],
+                                ),
                       ),
-                      const SizedBox(height: 30),
-                      Center(
-                        child: Container(
-                          constraints: const BoxConstraints(maxWidth: 900),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 24, vertical: 40),
-                          child: isLargeScreen
-                              ? Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(flex: 3, child: _buildFormCard()),
-                              const SizedBox(width: 24),
-                              Expanded(flex: 2, child: _buildContactCard()),
-                            ],
-                          )
-                              : Column(
-                            children: [
-                              _buildFormCard(),
-                              const SizedBox(height: 24),
-                              _buildContactCard(),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    const AppFooter(),
+                  ],
+                ),
+              ],
             ),
-          ),
-          AppFooter(),
-        ],
+          ],
+        ),
       ),
     );
   }
 
-
   Widget _buildFormCard() {
     return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: violetFonce.withOpacity(0.2))),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: violetFonce.withOpacity(0.2)),
+      ),
       elevation: 6,
       child: Padding(
         padding: const EdgeInsets.all(20),
@@ -197,10 +218,18 @@ class _ContactScreenState extends State<ContactScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: violetFonce,
                   foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
-                child: Text("Envoyez ma demande", style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
+                child: Text(
+                  "Envoyez ma demande",
+                  style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ],
@@ -219,13 +248,42 @@ class _ContactScreenState extends State<ContactScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Coordonnées", style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 16, color: violetFonce)),
+            Text(
+              "Coordonnées",
+              style: GoogleFonts.poppins(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: violetFonce,
+              ),
+            ),
             const SizedBox(height: 10),
-            Row(children: [const Icon(Icons.location_on, size: 16), const SizedBox(width: 8), const Expanded(child: Text("2 place du chêne vert\nMairie de cintré\n35310 CINTRÉ France"))]),
+            Row(
+              children: [
+                const Icon(Icons.location_on, size: 16),
+                const SizedBox(width: 8),
+                const Expanded(
+                  child: Text(
+                    "2 place du chêne vert\nMairie de cintré\n35310 CINTRÉ France",
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 8),
-            Row(children: [const Icon(Icons.phone, size: 16), const SizedBox(width: 8), const Text("01 23 45 67 89")]),
+            Row(
+              children: [
+                const Icon(Icons.phone, size: 16),
+                const SizedBox(width: 8),
+                const Text("01 23 45 67 89"),
+              ],
+            ),
             const SizedBox(height: 8),
-            Row(children: [const Icon(Icons.email, size: 16), const SizedBox(width: 8), Flexible(child: const Text("latroupedesechappees@gmail.com"))]),
+            Row(
+              children: [
+                const Icon(Icons.email, size: 16),
+                const SizedBox(width: 8),
+                Flexible(child: const Text("latroupedesechappees@gmail.com")),
+              ],
+            ),
           ],
         ),
       ),
