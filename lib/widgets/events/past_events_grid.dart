@@ -95,9 +95,8 @@ class PastEventsGrid extends StatelessWidget {
     );
   }
   Widget _buildEventCard(Spectacle spectacle, DateFormat dateFormat) {
-    final String base = ApiService.baseApiUrl;
+    final String base = ApiService.baseAssetsUrl;
     final String imageUrl = '$base/uploads/images/${spectacle.imageUrl}';
-
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,

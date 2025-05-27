@@ -66,19 +66,19 @@ class _MonCompteScreenState extends State<MonCompteScreen> {
       context: context,
       builder:
           (context) => AlertDialog(
-            title: const Text("Se déconnecter"),
-            content: const Text("Êtes-vous sûr de vouloir vous déconnecter ?"),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: const Text("Annuler"),
-              ),
-              ElevatedButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: const Text("Se déconnecter"),
-              ),
-            ],
+        title: const Text("Se déconnecter"),
+        content: const Text("Êtes-vous sûr de vouloir vous déconnecter ?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text("Annuler"),
           ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text("Se déconnecter"),
+          ),
+        ],
+      ),
     );
 
     if (confirm == true) {
@@ -96,149 +96,119 @@ class _MonCompteScreenState extends State<MonCompteScreen> {
     return Scaffold(
       endDrawer: const AppDrawer(),
       backgroundColor: Colors.white,
-      body:
-          user == null
-              ? const Center(child: CircularProgressIndicator())
-              : Column(
-                children: [
-                  const AppHeader(isHome: false),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const SizedBox(height: 8),
-                          Center(
-                            child: Text(
-                              "Bienvenue ${user!['prenom']} ${user!['nom']}",
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.poppins(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: violetFonce,
-                              ),
-                            ),
+      body: user == null
+          ? const Center(child: CircularProgressIndicator())
+          : SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const AppHeader(isHome: false),
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 1000),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Text(
+                          "Bienvenue ${user!['prenom']} ${user!['nom']}",
+                          style: GoogleFonts.poppins(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: violetFonce,
                           ),
-                          const SizedBox(height: 12),
-                          Center(
-                            child: Text(
-                              "Email : ${user!['email']}",
-                              style: GoogleFonts.poppins(color: Colors.black87),
-                              textAlign: TextAlign.center,
-                            ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      Center(
+                        child: Text(
+                          "Email : ${user!['email']}",
+                          style: GoogleFonts.poppins(color: Colors.black87),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Center(
+                        child: Text(
+                          "Mes réservations",
+                          style: GoogleFonts.poppins(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            color: violetFonce,
                           ),
-                          const SizedBox(height: 24),
-                          Center(
-                            child: Text(
-                              "Mes réservations",
-                              style: GoogleFonts.poppins(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                color: violetFonce,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          ...enrichedReservations.map((resa) {
-                            final event = resa['event'];
-                            final titre =
-                                event?['titre'] ?? 'Titre non disponible';
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
 
-                            // Date du spectacle choisi (via eventDate de la réservation)
-                            String dateHeureStr = '';
-                            final eventDateField = resa['eventDate'];
-                            if (eventDateField is Map &&
-                                eventDateField['dateTime'] != null) {
-                              dateHeureStr = eventDateField['dateTime'];
-                            }
+                      // Tes réservations sous forme de cartes
+                      ...enrichedReservations.map((resa) {
+                        final event = resa['event'];
+                        final titre = event?['titre'] ?? 'Titre non disponible';
 
-                            final dateReservationStr =
-                                resa['dateReservation'] ?? '';
-                            final places = resa['nombrePlaces'] ?? 0;
+                        String dateHeureStr = '';
+                        final eventDateField = resa['eventDate'];
+                        if (eventDateField is Map && eventDateField['dateTime'] != null) {
+                          dateHeureStr = eventDateField['dateTime'];
+                        }
 
-                            DateTime? spectacleDate =
-                                dateHeureStr.isNotEmpty
-                                    ? DateTime.tryParse(dateHeureStr)
-                                    : null;
+                        final dateReservationStr = resa['dateReservation'] ?? '';
+                        final places = resa['nombrePlaces'] ?? 0;
 
-                            DateTime? reservationDate = DateTime.tryParse(
-                              dateReservationStr,
-                            );
+                        DateTime? spectacleDate = dateHeureStr.isNotEmpty ? DateTime.tryParse(dateHeureStr) : null;
+                        DateTime? reservationDate = DateTime.tryParse(dateReservationStr);
 
-                            String dateSpectacle =
-                                spectacleDate != null
-                                    ? DateFormat(
-                                      "EEEE d MMMM yyyy à HH'h'mm",
-                                      'fr_FR',
-                                    ).format(spectacleDate)
-                                    : 'Date non disponible';
+                        String dateSpectacle = spectacleDate != null
+                            ? DateFormat("EEEE d MMMM yyyy à HH'h'mm", 'fr_FR').format(spectacleDate)
+                            : 'Date non disponible';
 
-                            String dateReservation =
-                                reservationDate != null
-                                    ? DateFormat(
-                                      'dd/MM/yyyy',
-                                    ).format(reservationDate)
-                                    : 'Réservation inconnue';
+                        String dateReservation = reservationDate != null
+                            ? DateFormat('dd/MM/yyyy').format(reservationDate)
+                            : 'Réservation inconnue';
 
-                            return Card(
-                              margin: const EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal: 16,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              elevation: 3,
-                              child: Padding(
-                                padding: const EdgeInsets.all(16),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                        return Card(
+                          margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          elevation: 3,
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
                                   children: [
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.event,
-                                          color: Colors.deepPurple,
-                                        ),
-                                        const SizedBox(width: 8),
-                                        Expanded(
-                                          child: Text(
-                                            titre,
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      "Date du spectacle : $dateSpectacle",
-                                      style: GoogleFonts.poppins(),
-                                    ),
-                                    Text(
-                                      "Réservé le : $dateReservation",
-                                      style: GoogleFonts.poppins(),
-                                    ),
-                                    Text(
-                                      "Places : $places",
-                                      style: GoogleFonts.poppins(),
+                                    const Icon(Icons.event, color: Colors.deepPurple),
+                                    const SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        titre,
+                                        style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
+                                      ),
                                     ),
                                   ],
                                 ),
-                              ),
-                            );
-                          }).toList(),
-                        ],
-                      ),
-                    ),
+                                const SizedBox(height: 8),
+                                Text("Date du spectacle : $dateSpectacle", style: GoogleFonts.poppins()),
+                                Text("Réservé le : $dateReservation", style: GoogleFonts.poppins()),
+                                Text("Places : $places", style: GoogleFonts.poppins()),
+                              ],
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                      const SizedBox(height: 48),
+                    ],
                   ),
-                  const AppFooter(),
-                ],
+                ),
               ),
+            ),
+            const AppFooter(),
+          ],
+        ),
+      ),
     );
   }
 }

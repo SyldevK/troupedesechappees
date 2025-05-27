@@ -51,25 +51,29 @@ class NotreHistoireScreen extends StatelessWidget {
                       const SizedBox(height: 32),
                       _ActeWidget(
                         titre: "ACTE I – La naissance",
-                        texte: "L'association a été fondée en 2001 par des passionnés du théâtre...",
+                        texte:
+                            "L'association a été fondée en 2001 par des passionnés du théâtre...",
                         imagePath: 'assets/images/masques.png',
                         imageLeft: false,
                       ),
                       _ActeWidget(
                         titre: "ACTE II – Les premières scènes",
-                        texte: "Integer non nulla consectetur mauris feugiat euismod...",
+                        texte:
+                            "Integer non nulla consectetur mauris feugiat euismod...",
                         imagePath: 'assets/images/carousel1.jpg',
                         imageLeft: true,
                       ),
                       _ActeWidget(
                         titre: "ACTE III – La croissance",
-                        texte: "Phasellus luctus, ex accumsan laoreet cursus...",
+                        texte:
+                            "Phasellus luctus, ex accumsan laoreet cursus...",
                         imagePath: 'assets/images/carousel8.jpg',
                         imageLeft: false,
                       ),
                       _ActeWidget(
                         titre: "ACTE IV – Aujourd'hui et demain",
-                        texte: "Suspendisse potenti. Donec vitae venenatis nisl...",
+                        texte:
+                            "Suspendisse potenti. Donec vitae venenatis nisl...",
                         imagePath: 'assets/images/femmes.jpg',
                         imageLeft: true,
                       ),
@@ -79,14 +83,15 @@ class NotreHistoireScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const AppFooter(), // ✅ pleine largeur
+            const AppFooter(),
           ],
         ),
       ),
     );
   }
 }
-  class _ActeWidget extends StatelessWidget {
+
+class _ActeWidget extends StatelessWidget {
   final String titre;
   final String texte;
   final String imagePath;
@@ -108,16 +113,20 @@ class NotreHistoireScreen extends StatelessWidget {
       borderRadius: BorderRadius.circular(12),
       child: Image.asset(
         imagePath,
-        width: isMobile && titre.contains("ACTE I") ? 220 : (isMobile ? double.infinity : 160),
-        height: isMobile && titre.contains("ACTE I") ? 150 : (isMobile ? 200 : 120),
+        width:
+            isMobile && titre.contains("ACTE I")
+                ? 220
+                : (isMobile ? double.infinity : 160),
+        height:
+            isMobile && titre.contains("ACTE I") ? 150 : (isMobile ? 200 : 120),
         fit: BoxFit.cover,
       ),
     );
 
-    final image = isMobile && titre.contains("ACTE I")
-        ? Center(child: imageWidget)
-        : imageWidget;
-
+    final image =
+        isMobile && titre.contains("ACTE I")
+            ? Center(child: imageWidget)
+            : imageWidget;
 
     final texteWidget = Padding(
       padding: EdgeInsets.symmetric(
