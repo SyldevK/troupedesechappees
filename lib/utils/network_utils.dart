@@ -7,8 +7,8 @@ String buildLocalImageUrl(String imagePath) {
   if (kIsWeb) {
     return '$domain$imagePath';
   } else if (Platform.isAndroid) {
-    return 'http://10.0.2.2$imagePath'; // Android accède à Laragon via 10.0.2.2
+    return 'http://10.0.2.2$imagePath';
   } else {
-    return '$domain$imagePath'; // iOS, macOS, Windows
+    return '$domain$imagePath';
   }
 }

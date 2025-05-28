@@ -20,7 +20,7 @@ class AuthProvider extends ChangeNotifier {
     final token = await _storage.read(key: 'jwt_token');
     if (token != null) {
       _isLoggedIn = true;
-      await _fetchRoles(token); // charge les rôles à partir du backend
+      await _fetchRoles(token);
     } else {
       _isLoggedIn = false;
     }

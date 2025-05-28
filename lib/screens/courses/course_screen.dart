@@ -70,7 +70,7 @@ class CoursesScreen extends StatelessWidget {
                     ),
                   ),
 
-                  const AppFooter(), // ✅ Maintenant collé au bas du contenu
+                  const AppFooter(),
                 ],
               ),
             ),

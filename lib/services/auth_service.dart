@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'api_service.dart';
 
 class AuthService {
-  static const _baseUrl = 'https://b73e-2a01-cb08-8b47-9900-b0fe-f49e-21fd-4b3e.ngrok-free.app/api';
   static const _storage = FlutterSecureStorage();
 
   static Future<String?> login(String email, String password) async {
-    final url = Uri.parse('$_baseUrl/login');
+    final url = Uri.parse('${ApiService.baseApiUrl}/api/login');
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},
@@ -39,7 +39,7 @@ class AuthService {
     final token = await getToken();
     if (token == null) return null;
 
-    final url = Uri.parse('$_baseUrl/me');
+    final url = Uri.parse('${ApiService.baseApiUrl}/api/me');
     final response = await http.get(
       url,
       headers: {
@@ -48,9 +48,10 @@ class AuthService {
       },
     );
 
-    // Vérifie que le content-type est bien JSON
     final contentType = response.headers['content-type'];
-    if (response.statusCode == 200 && contentType != null && contentType.contains('application/json')) {
+    if (response.statusCode == 200 &&
+        contentType != null &&
+        contentType.contains('application/json')) {
       try {
         return jsonDecode(response.body);
       } catch (e) {

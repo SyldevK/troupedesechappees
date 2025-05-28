@@ -102,7 +102,7 @@ class _BilletterieFormState extends State<BilletterieForm> {
   }
 
   Future<void> _envoyerReservation() async {
-    final apiUrl = Uri.parse('${ApiService.baseApiUrl}/reservations');
+    final apiUrl = Uri.parse('${ApiService.baseApiUrl}/api/reservations');
     final token = await AuthService.getToken();
     final user = await AuthService.fetchUserProfile();
 

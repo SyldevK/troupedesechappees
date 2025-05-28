@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../services/api_service.dart';
+
 class AppFooter extends StatelessWidget {
   const AppFooter({super.key});
 
@@ -348,8 +350,9 @@ class _FooterLinkListState extends State<FooterLinkList> {
                           Navigator.pushNamed(context, '/events');
                           break;
                         case "Télécharger le planning PDF":
+                          final pdfUrl = Uri.parse('${ApiService.baseAssetsUrl}/pdf/planning.pdf');
                           launchUrl(
-                            Uri.parse("https://b73e-2a01-cb08-8b47-9900-b0fe-f49e-21fd-4b3e.ngrok-free.app/pdf/planning.pdf"),
+                            pdfUrl,
                             mode: LaunchMode.externalApplication,
                           );
                           break;

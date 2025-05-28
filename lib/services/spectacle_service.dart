@@ -10,9 +10,9 @@ class SpectacleService {
   // Base URL dynamique selon la plateforme
   static String get _baseUrl {
     if (kIsWeb) {
-      return 'https://b73e-2a01-cb08-8b47-9900-b0fe-f49e-21fd-4b3e.ngrok-free.app/api';
+      return 'http://tie.test/api';
     } else if (Platform.isAndroid) {
-      return 'https://b73e-2a01-cb08-8b47-9900-b0fe-f49e-21fd-4b3e.ngrok-free.app/api';
+      return 'https://7d66-2a01-cb08-8b47-9900-d93e-433b-320d-f6e4.ngrok-free.app/api';
     } else {
       return 'http://localhost:8000/api';
     }

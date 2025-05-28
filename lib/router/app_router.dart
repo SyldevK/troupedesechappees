@@ -1,4 +1,3 @@
-// fichier : lib/router/app_router.dart
 import 'package:flutter/material.dart';
 import 'package:troupedesechappees/screens/ateliers/inscription_atelier_screen.dart';
 import 'package:troupedesechappees/screens/billetterie/billetterie_screen.dart';
@@ -13,8 +12,7 @@ import '../screens/compte/mon_compte_screen.dart';
 import '../screens/contact/contact_screen.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/notreHistoire/notre_histoire_screen.dart';
-
-
+import 'package:troupedesechappees/screens/motdepasseoublie/reset_password_screen.dart';
 
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -46,6 +44,13 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => const InscriptionScreen());
       case '/login':
         return MaterialPageRoute(builder: (_) => const LoginScreen());
+      case '/reset-password':
+        final fragment = Uri.base.fragment;
+        final uri = Uri.parse('http://fake$fragment');
+        final token = uri.queryParameters['token'] ?? '';
+        return MaterialPageRoute(
+          builder: (_) => ResetPasswordScreen(token: token),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

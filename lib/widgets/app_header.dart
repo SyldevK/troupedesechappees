@@ -3,8 +3,19 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../providers/auth_provider.dart';
 
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../providers/auth_provider.dart';
+
 String getImagePath(String fileName) {
   return 'assets/images/$fileName';
+}
+
+void _safePushNamed(BuildContext context, String routeName) {
+  if (ModalRoute.of(context)?.settings.name != routeName) {
+    Navigator.pushNamed(context, routeName);
+  }
 }
 
 class AppHeader extends StatelessWidget {
@@ -26,7 +37,6 @@ class AppHeader extends StatelessWidget {
     }
   }
 }
-
 
 // ----------------------------
 // Mobile Header
@@ -101,12 +111,7 @@ class _TabletHeader extends StatelessWidget {
     final isAdmin = context.watch<AuthProvider>().isAdmin;
     final width = MediaQuery.of(context).size.width;
 
-    double horizontalPadding =
-        width > 1200
-            ? 32
-            : width > 800
-            ? 16
-            : 8;
+    double horizontalPadding = width > 1200 ? 32 : width > 800 ? 16 : 8;
     double verticalPadding = width > 900 ? 12 : 6;
 
     return Container(
@@ -141,22 +146,22 @@ class _TabletHeader extends StatelessWidget {
               IconButton(
                 tooltip: 'Accueil',
                 icon: const Icon(Icons.home, color: Colors.white),
-                onPressed: () => Navigator.pushNamed(context, '/home'),
+                onPressed: () => _safePushNamed(context, '/home'),
               ),
               IconButton(
                 tooltip: 'Événements',
                 icon: const Icon(Icons.event, color: Colors.white),
-                onPressed: () => Navigator.pushNamed(context, '/events'),
+                onPressed: () => _safePushNamed(context, '/events'),
               ),
               IconButton(
                 tooltip: 'Billetterie',
                 icon: const Icon(Icons.theater_comedy, color: Colors.white),
-                onPressed: () => Navigator.pushNamed(context, '/billetterie'),
+                onPressed: () => _safePushNamed(context, '/billetterie'),
               ),
               IconButton(
                 tooltip: 'Contact',
                 icon: const Icon(Icons.mail_outline, color: Colors.white),
-                onPressed: () => Navigator.pushNamed(context, '/contact'),
+                onPressed: () => _safePushNamed(context, '/contact'),
               ),
               IconButton(
                 tooltip: isLoggedIn ? 'Mon compte' : 'Connexion',
@@ -164,19 +169,13 @@ class _TabletHeader extends StatelessWidget {
                   isLoggedIn ? Icons.account_circle : Icons.login,
                   color: Colors.white,
                 ),
-                onPressed:
-                    () => Navigator.pushNamed(
-                      context,
-                      isLoggedIn ? '/monCompte' : '/login',
-                    ),
+                onPressed: () =>
+                    _safePushNamed(context, isLoggedIn ? '/monCompte' : '/login'),
               ),
               if (isAdmin)
                 IconButton(
                   tooltip: 'Administration',
-                  icon: const Icon(
-                    Icons.admin_panel_settings,
-                    color: Colors.white,
-                  ),
+                  icon: const Icon(Icons.admin_panel_settings, color: Colors.white),
                   onPressed: () async {
                     final Uri url = Uri.parse('http://tie.test/admin');
                     await launchUrl(url, mode: LaunchMode.externalApplication);
@@ -209,14 +208,13 @@ class _WebHeader extends StatelessWidget {
     final isAdmin = context.watch<AuthProvider>().isAdmin;
     final width = MediaQuery.of(context).size.width;
 
-    double horizontalPadding =
-        width > 1500
-            ? 64
-            : width > 1300
-            ? 40
-            : width > 1100
-            ? 20
-            : 8;
+    double horizontalPadding = width > 1500
+        ? 64
+        : width > 1300
+        ? 40
+        : width > 1100
+        ? 20
+        : 8;
     double verticalPadding = width > 800 ? 20 : 10;
 
     return Container(
@@ -248,34 +246,21 @@ class _WebHeader extends StatelessWidget {
                   color: Colors.white,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  //fontFamily: 'Poppins', // Si tu veux la police Poppins
+                  fontFamily: 'Poppins',
                 ),
               ),
             ],
           ),
           Row(
-            children: [
-              const _HeaderButton(label: 'Accueil'),
-              const _HeaderButton(label: 'Notre histoire'),
-              const _HeaderButton(label: 'Nos cours'),
-              const _HeaderButton(label: 'Événements'),
-              const _HeaderButton(label: 'Billetterie'),
-              const _HeaderButton(label: 'Galerie'),
-              const _HeaderButton(label: 'Contact'),
-              const _HeaderButton(label: 'Ateliers'),
-              // ➕ Ajoute ici d'autres liens si besoin
-              if (isAdmin)
-                IconButton(
-                  tooltip: 'Administration',
-                  icon: const Icon(
-                    Icons.admin_panel_settings,
-                    color: Colors.white,
-                  ),
-                  onPressed: () async {
-                    final Uri url = Uri.parse('http://tie.test/admin');
-                    await launchUrl(url, mode: LaunchMode.externalApplication);
-                  },
-                ),
+            children: const [
+              _HeaderButton(label: 'Accueil'),
+              _HeaderButton(label: 'Notre histoire'),
+              _HeaderButton(label: 'Nos cours'),
+              _HeaderButton(label: 'Événements'),
+              _HeaderButton(label: 'Billetterie'),
+              _HeaderButton(label: 'Galerie'),
+              _HeaderButton(label: 'Contact'),
+              _HeaderButton(label: 'Ateliers'),
             ],
           ),
           Row(
@@ -283,10 +268,7 @@ class _WebHeader extends StatelessWidget {
               IconButton(
                 tooltip: isLoggedIn ? 'Mon compte' : 'Connexion',
                 onPressed: () {
-                  Navigator.pushNamed(
-                    context,
-                    isLoggedIn ? '/monCompte' : '/login',
-                  );
+                  _safePushNamed(context, isLoggedIn ? '/monCompte' : '/login');
                 },
                 icon: Icon(
                   isLoggedIn ? Icons.account_circle : Icons.login,
@@ -328,16 +310,15 @@ class _HeaderButtonState extends State<_HeaderButton> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    double horizontalButtonPadding =
-        width > 1700
-            ? 40
-            : width > 1300
-            ? 28
-            : width > 1000
-            ? 16
-            : width > 800
-            ? 8
-            : 4;
+    double horizontalButtonPadding = width > 1700
+        ? 40
+        : width > 1300
+        ? 28
+        : width > 1000
+        ? 16
+        : width > 800
+        ? 8
+        : 4;
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: horizontalButtonPadding),
@@ -345,7 +326,7 @@ class _HeaderButtonState extends State<_HeaderButton> {
         onEnter: (_) => setState(() => _isHovered = true),
         onExit: (_) => setState(() => _isHovered = false),
         child: GestureDetector(
-          onTap: () => Navigator.pushNamed(context, _getRoute(widget.label)),
+          onTap: () => _safePushNamed(context, _getRoute(widget.label)),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -356,9 +337,7 @@ class _HeaderButtonState extends State<_HeaderButton> {
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
                   decoration:
-                      _isHovered
-                          ? TextDecoration.underline
-                          : TextDecoration.none,
+                  _isHovered ? TextDecoration.underline : TextDecoration.none,
                   decorationColor: Colors.white,
                   decorationThickness: 2,
                 ),

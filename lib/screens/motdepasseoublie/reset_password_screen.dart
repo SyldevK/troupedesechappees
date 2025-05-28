@@ -15,17 +15,8 @@ class ResetPasswordScreen extends StatefulWidget {
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final _passwordController = TextEditingController();
   bool _sending = false;
-  late String token;
 
-  @override
-  void initState() {
-    super.initState();
-    final fragment = Uri.base.fragment; // ex: /reset-password?token=XYZ
-    final uri = Uri.parse('http://fake$fragment');
-    final path = uri.path;
-    final token = uri.queryParameters['token'];
-    debugPrint('TOKEN dans ResetPasswordScreen : $token');
-  }
+  String get token => widget.token; // ✅ On utilise le token passé par le constructeur
 
   Future<void> resetPassword() async {
     setState(() => _sending = true);
@@ -33,7 +24,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     try {
       final baseUrl = ApiService.baseApiUrl;
       final response = await http.post(
-        Uri.parse('$baseUrl/api/reset-password'),
+        Uri.parse('$baseUrl/reset-password'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'token': token,
@@ -43,8 +34,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text('Mot de passe réinitialisé avec succès !')),
+          const SnackBar(content: Text('Mot de passe réinitialisé avec succès !')),
         );
         Navigator.pop(context);
       } else {
@@ -84,10 +74,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     ? 'Lien invalide ou expiré.'
                     : 'Entrez votre nouveau mot de passe.',
                 textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 18,
-                ),
+                style: const TextStyle(fontFamily: 'Poppins', fontSize: 18),
               ),
               const SizedBox(height: 30),
               if (token.isNotEmpty) ...[
@@ -118,7 +105,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: violetFonce,
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 16),
+                      horizontal: 40,
+                      vertical: 16,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),

@@ -13,7 +13,7 @@ Future<void> sendInscriptionRequest({
   required String atelier,
   required String date_naissance,
 }) async {
-  final url = Uri.parse('${ApiService.baseApiUrl}/inscription-atelier');
+  final url = Uri.parse('${ApiService.baseApiUrl}/api/inscription-atelier');
 
   final token = await AuthService.getToken();
   if (token == null) {

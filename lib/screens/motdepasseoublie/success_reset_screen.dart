@@ -33,7 +33,7 @@ class SuccessResetScreen extends StatelessWidget {
                   Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(builder: (context) => const LoginScreen()),
-                        (route) => false, // Supprime tout l'historique
+                        (route) => false,
                   );
                 },
                 child: const Text('Se connecter'),
